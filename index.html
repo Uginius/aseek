@@ -188,6 +188,18 @@
     .m-on [data-reveal="line"].is-in.is-done { transform: none; }
   }
 
+  /* кнопки «скопировать» рядом с контактами. Скрыты разметкой: показывает их
+     скрипт, потому что без него копировать нечем */
+  [data-copy] { display: none; flex: 0 0 auto; width: 38px; height: 38px; padding: 0;
+    align-items: center; justify-content: center; background: transparent;
+    border: 1px solid #3A4046; color: #9AA0A8; cursor: pointer;
+    transition: color .2s ease, border-color .2s ease; }
+  [data-copy]:hover { color: #EDEAE3; border-color: #6A7079; }
+  [data-copy] .ok { display: none; }
+  [data-copy].is-done { color: #C7B79A; border-color: #C7B79A; }
+  [data-copy].is-done .mark { display: none; }
+  [data-copy].is-done .ok { display: block; }
+
   /* уведомление о куки */
   @keyframes ck-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: no-preference) { [data-cookie].is-in { animation: ck-rise .3s ease-out both; } }
@@ -198,7 +210,7 @@
   @media print {
     /* печать не зависит ни от скрипта, ни от наблюдателя */
     [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
-    [data-cookie] { display: none !important; }
+    [data-cookie], [data-copy] { display: none !important; }
     html, body { background: #fff !important; }
     header { position: static !important; backdrop-filter: none !important; background: #fff !important; }
     [data-skip], [data-scroll-hint], [data-scheme-hint] { display: none !important; }
@@ -1133,11 +1145,41 @@
           <p style="margin-top: clamp(18px, 3vw, 28px); max-width: 28em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.47; color: #C3C7CB; text-wrap: pretty;">Напишите или позвоните и опишите в двух строках, что происходит в процессе. Ответим по существу: что здесь имеет смысл делать, а что нет.</p>
           <p style="margin-top: clamp(14px, 2.2vw, 20px); max-width: 28em; font-size: 16px; line-height: 1.5; color: #8F959C; text-wrap: pretty;">Если до диагностики рано — начните с рабочей сессии на полдня. Она ни к чему не обязывает и заканчивается вашим собственным списком, а не нашим предложением.</p>
         </div>
-        <div data-reveal style="flex: 3 1 280px; display: flex; flex-direction: column; gap: clamp(20px, 3.4vw, 34px); align-self: center;">
-          <a href="mailto:hello@aseek.ru" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">hello@aseek.ru</a>
-          <a href="tel:+79111278110" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 911 127-81-10</a>
-          <a href="tel:+79626856358" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 962 685-63-58</a>
-          <a href="https://t.me/Esla812" rel="noopener" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">@Esla812</a>
+        <div data-reveal style="flex: 3 1 280px; display: flex; flex-direction: column; gap: clamp(20px, 3.4vw, 30px); align-self: center;">
+
+          <div>
+            <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8F959C; margin-bottom: 7px;">Почта</p>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <a href="mailto:hello@aseek.ru" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">hello@aseek.ru</a>
+              <button type="button" data-copy="hello@aseek.ru" aria-label="Скопировать почту hello@aseek.ru"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5"><g class="mark"><rect x="6.6" y="6.6" width="9.8" height="9.8" /><path d="M13.4 3.6H3.6v9.8" /></g><path class="ok" d="M4 10.4L8 14.4L16 5.6" /></svg></button>
+            </div>
+          </div>
+
+          <div>
+            <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8F959C; margin-bottom: 7px;">Телефон</p>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <a href="tel:+79111278110" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 911 127-81-10</a>
+              <button type="button" data-copy="+7 911 127-81-10" aria-label="Скопировать телефон +7 911 127-81-10"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5"><g class="mark"><rect x="6.6" y="6.6" width="9.8" height="9.8" /><path d="M13.4 3.6H3.6v9.8" /></g><path class="ok" d="M4 10.4L8 14.4L16 5.6" /></svg></button>
+            </div>
+          </div>
+
+          <div>
+            <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8F959C; margin-bottom: 7px;">Второй телефон</p>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <a href="tel:+79626856358" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 962 685-63-58</a>
+              <button type="button" data-copy="+7 962 685-63-58" aria-label="Скопировать телефон +7 962 685-63-58"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5"><g class="mark"><rect x="6.6" y="6.6" width="9.8" height="9.8" /><path d="M13.4 3.6H3.6v9.8" /></g><path class="ok" d="M4 10.4L8 14.4L16 5.6" /></svg></button>
+            </div>
+          </div>
+
+          <div>
+            <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #8F959C; margin-bottom: 7px;">Telegram</p>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <a href="https://t.me/Esla812" rel="noopener" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">@Esla812</a>
+              <button type="button" data-copy="@Esla812" aria-label="Скопировать имя в Telegram @Esla812"><svg viewBox="0 0 20 20" width="17" height="17" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5"><g class="mark"><rect x="6.6" y="6.6" width="9.8" height="9.8" /><path d="M13.4 3.6H3.6v9.8" /></g><path class="ok" d="M4 10.4L8 14.4L16 5.6" /></svg></button>
+            </div>
+          </div>
+
+          <p data-copy-live role="status" aria-live="polite" class="vh"></p>
           <p style="max-width: 24em; font-size: 15px; line-height: 1.5; color: #8F959C; text-wrap: pretty;">Работаем удалённо, по всей России. Разговоры и рабочие сессии — по видеосвязи, в вашем часовом поясе.</p>
         </div>
       </div>
@@ -1160,6 +1202,53 @@
     <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #2A2F35; font-size: 13px; line-height: 1.6; color: #8F959C; font-variant-numeric: tabular-nums;">ООО «Мы7» · ИНН 7804720410 · ОГРН 1267800024293</p>
   </div>
 </footer>
+<script>
+(function () {
+  var btns = document.querySelectorAll('[data-copy]');
+  if (!btns.length) return;
+  var live = document.querySelector('[data-copy-live]');
+  var say = function (t) { if (live) live.textContent = t; };
+
+  // navigator.clipboard есть только на защищённом соединении; на http и в
+  // старых браузерах остаётся приём с временным полем и execCommand
+  var copy = function (text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (ok, no) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:absolute;left:-9999px;top:0';
+      document.body.appendChild(ta);
+      ta.select();
+      var done = false;
+      try { done = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      done ? ok() : no();
+    });
+  };
+
+  // таймер и «горящая» кнопка общие на все четыре: иначе отсчёт предыдущей
+  // кнопки гасит отметку и сообщение следующей, если нажать две подряд
+  var timer, last;
+  Array.prototype.forEach.call(btns, function (b) {
+    b.style.display = 'inline-flex';
+    b.addEventListener('click', function () {
+      copy(b.getAttribute('data-copy')).then(function () {
+        clearTimeout(timer);
+        if (last && last !== b) last.className = '';
+        last = b;
+        b.className = 'is-done';
+        say('Скопировано: ' + b.getAttribute('data-copy'));
+        timer = setTimeout(function () { b.className = ''; say(''); last = null; }, 1900);
+      }, function () {
+        say('Скопировать не удалось — выделите текст вручную');
+      });
+    });
+  });
+})();
+</script>
 <!-- Уведомление о куки. По умолчанию скрыто разметкой: без JavaScript его нечем
      было бы закрыть, и оно висело бы навсегда. Показывает и прячет скрипт ниже. -->
 <div data-cookie role="region" aria-label="Уведомление об обработке данных"
