@@ -1,9 +1,12 @@
 // Optional enhancement only: page is fully readable and complete without this file.
+// Скрытие блоков живёт в CSS под классом .m-on, который вешает и через 2 с
+// безусловно снимает встроенный скрипт в <head>. Здесь только тайминги и показ.
 export function init(root) {
   root = root || document;
   if (root.__aseekMotion) return;
   root.__aseekMotion = true;
 
+  const off = typeof window.__aseekReveal === 'function' ? window.__aseekReveal : () => {};
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const narrow = window.innerWidth < 760;
 
@@ -21,7 +24,10 @@ export function init(root) {
       let current = targets[0];
       for (const t of targets) if (t.el.offsetTop <= line) current = t;
       if (window.scrollY < 80) current = null;
-      for (const t of targets) t.a.setAttribute('data-active', String(t === current));
+      for (const t of targets) {
+        if (t === current) t.a.setAttribute('aria-current', 'true');
+        else t.a.removeAttribute('aria-current');
+      }
     };
     window.addEventListener(
       'scroll',
@@ -36,33 +42,29 @@ export function init(root) {
     spy();
   }
 
-  if (reduce) return;
+  if (reduce) {
+    off();
+    return;
+  }
 
   // --- reveal on enter ----------------------------------------------------
-  const dy = narrow ? 8 : 20;
+  // dy вынесен в CSS-переменную --reveal-dy (20px / 8px под 760px)
   const step = narrow ? 45 : 70;
 
   const prep = (el, delay, kind) => {
-    if (kind === 'line') {
-      el.style.transformOrigin = 'left center';
-      el.style.transform = 'scaleX(0)';
-      el.style.transition = 'transform .7s cubic-bezier(.22,.7,.2,1) ' + delay + 'ms';
-    } else {
-      el.style.opacity = '0';
-      el.style.transform = 'translate3d(0,' + dy + 'px,0)';
-      el.style.transition =
-        'opacity .45s ease ' + delay + 'ms, transform .55s cubic-bezier(.22,.7,.2,1) ' + delay + 'ms';
-    }
+    el.style.transition =
+      kind === 'line'
+        ? 'transform .7s cubic-bezier(.22,.7,.2,1) ' + delay + 'ms'
+        : 'opacity .45s ease ' + delay + 'ms, transform .55s cubic-bezier(.22,.7,.2,1) ' + delay + 'ms';
     el.style.willChange = 'opacity, transform';
   };
 
   const show = (el, kind) => {
-    el.style.opacity = '';
-    el.style.transform = kind === 'line' ? 'scaleX(1)' : 'translate3d(0,0,0)';
+    el.classList.add('is-in');
     setTimeout(() => {
       el.style.willChange = '';
       el.style.transition = '';
-      if (kind === 'line') el.style.transform = '';
+      if (kind === 'line') el.classList.add('is-done');
     }, 1400);
   };
 
@@ -79,21 +81,33 @@ export function init(root) {
     items.push({ el, kind });
   });
 
+  const showAll = () => items.forEach((i) => show(i.el, i.kind));
+
   if (!('IntersectionObserver' in window)) {
-    items.forEach((i) => show(i.el, i.kind));
+    showAll();
     return;
   }
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const rec = items.find((i) => i.el === e.target);
-        show(e.target, rec ? rec.kind : 'up');
-        io.unobserve(e.target);
-      });
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-  );
-  items.forEach((i) => io.observe(i.el));
+  // подписка отдельно от подготовки: если наблюдатель выбросит исключение,
+  // блоки всё равно показываются, не дожидаясь предохранителя в <head>
+  try {
+    // показ теперь наш: снимаем предохранитель из <head>, иначе он через 2 с
+    // проявит всю страницу и появление по прокрутке работать перестанет
+    if (typeof window.__aseekKeep === 'function') window.__aseekKeep();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const rec = items.find((i) => i.el === e.target);
+          show(e.target, rec ? rec.kind : 'up');
+          io.unobserve(e.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+    );
+    items.forEach((i) => io.observe(i.el));
+  } catch (err) {
+    off();
+    showAll();
+  }
 }

@@ -6,6 +6,10 @@
 <title>aseek — ИИ в операционных процессах</title>
 <meta name="description" content="Внедряем ИИ в операционные процессы: входящие документы, спецификации и счета, снабжение, согласования. Считаем, во что обходится операция сейчас, и фиксируем это число до начала работ. Диагностика от 600 000 ₽." />
 <meta name="color-scheme" content="light" />
+<!-- два критических кириллических файла: заголовок h1 (Source Serif 4 400) и
+     основной текст (Golos Text 400). Остальные начертания подтягиваются по ходу. -->
+<link rel="preload" href="fonts/SourceSerif4-Regular-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/GolosText-Regular-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="favicon.ico" sizes="32x32" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -23,6 +27,54 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="aseek — ИИ в операционных процессах" />
 <meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://aseek.ru/#organization",
+  "name": "aseek",
+  "legalName": "ООО «Мы7»",
+  "taxID": "7804720410",
+  "identifier": [
+    { "@type": "PropertyValue", "name": "ИНН", "value": "7804720410" },
+    { "@type": "PropertyValue", "name": "ОГРН", "value": "1267800024293" }
+  ],
+  "url": "https://aseek.ru/",
+  "logo": "https://aseek.ru/icon-512.png",
+  "image": "https://aseek.ru/og.png",
+  "email": "hello@aseek.ru",
+  "telephone": "+7 911 127-81-10",
+  "description": "Внедрение ИИ в операционные процессы: разбор входящих документов, подготовка спецификаций и счетов, снабжение, согласования, переписка с клиентами. Работаем на входе: почта, мессенджеры, таблицы, CRM, переделывать учётную систему не требуется. Считаем, во что операция обходится сейчас, и фиксируем это число до начала работ. Диагностика от 600 000 ₽.",
+  "areaServed": { "@type": "Country", "name": "Россия" },
+  "knowsAbout": [
+    "внедрение искусственного интеллекта",
+    "автоматизация операционных процессов",
+    "обработка заявок",
+    "подготовка спецификаций",
+    "снабжение",
+    "обмен документами с учётной системой",
+    "разбор входящих писем и вложений",
+    "подбор аналогов по истории продаж",
+    "диагностика бизнес-процессов"
+  ],
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "email": "hello@aseek.ru",
+      "telephone": "+7 911 127-81-10",
+      "availableLanguage": ["ru"]
+    },
+    {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "telephone": "+7 962 685-63-58",
+      "availableLanguage": ["ru"]
+    }
+  ],
+  "sameAs": ["https://t.me/Esla812"]
+}
+</script>
 <style>
 /* Source Serif 4 (заголовки) + Golos Text (текст, табличные цифры), OFL.
      Статические начертания, подмножества кириллица/латиница, локально в fonts/. */
@@ -61,7 +113,7 @@
   [data-nav] a { color: #4C525A; padding-bottom: 3px; border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease; }
   [data-nav] a:hover { color: #14171A; border-bottom-color: #14171A; }
   [data-nav] a:active { color: #2E5C4E; }
-  [data-nav] a[data-active="true"] { color: #14171A; border-bottom-color: #2E5C4E; }
+  [data-nav] a[aria-current="true"] { color: #14171A; border-bottom-color: #2E5C4E; }
 
   [data-big-link] { position: relative; display: inline-block; padding-bottom: 8px; transition: color .25s ease; }
   /* линия видна в покое на всю ширину: в состоянии 18% она читалась как обрубок,
@@ -94,6 +146,73 @@
   :focus-visible { outline: 2px solid #2E5C4E; outline-offset: 4px; }
   ::selection { background: #DDE7E2; }
 
+  /* --- утилиты доступности ------------------------------------------------ */
+  .vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+  [data-skip] { position: absolute; left: 12px; top: -80px; z-index: 60; background: #14171A; color: #FBFAF7; padding: 11px 18px; font-size: 15px; transition: top .15s ease; }
+  [data-skip]:focus { top: 12px; }
+  main:focus { outline: none; }
+
+  /* --- таблицы, которые прокручиваются вбок -------------------------------
+     Подсказка на чистом CSS, без скрипта и без медиазапросов: два «локальных»
+     градиента цвета карточки едут вместе с содержимым и гасят тень у того края,
+     где прокручивать уже некуда. Обе таблицы лежат на светлой карточке #FBFAF7,
+     в том числе внутри тёмной секции #report, поэтому цвет маски один. */
+  [data-scroll] {
+    overflow-x: auto;
+    background-color: #FBFAF7;
+    background-image:
+      linear-gradient(90deg, #FBFAF7 32%, rgba(251,250,247,0)),
+      linear-gradient(270deg, #FBFAF7 32%, rgba(251,250,247,0)),
+      radial-gradient(farthest-side at 0 50%, rgba(20,23,26,.22), rgba(20,23,26,0)),
+      radial-gradient(farthest-side at 100% 50%, rgba(20,23,26,.22), rgba(20,23,26,0));
+    background-position: left center, right center, left center, right center;
+    background-size: 46px 100%, 46px 100%, 16px 100%, 16px 100%;
+    background-repeat: no-repeat;
+    background-attachment: local, local, scroll, scroll;
+  }
+  [data-scroll]:focus-visible { outline-offset: -2px; }
+  [data-scroll-hint] { display: none; font-size: 13px; line-height: 1.4; color: #6C685E; }
+  @media (max-width: 760px) { [data-scroll-hint] { display: block; } }
+
+  /* --- появление блоков ---------------------------------------------------
+     Скрывает только класс .m-on, который вешает на <html> скрипт в <head>.
+     Без скрипта класса нет — и на странице ничего не скрыто. Задержки stagger
+     и кривые по-прежнему ставит motion.js инлайновым transition. */
+  :root { --reveal-dy: 20px; }
+  @media (max-width: 759.98px) { :root { --reveal-dy: 8px; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .m-on [data-reveal] { opacity: 0; transform: translate3d(0, var(--reveal-dy), 0); }
+    .m-on [data-reveal="line"] { opacity: 1; transform: scaleX(0); transform-origin: left center; }
+    .m-on [data-reveal].is-in { opacity: 1; transform: translate3d(0, 0, 0); }
+    .m-on [data-reveal="line"].is-in { transform: scaleX(1); }
+    .m-on [data-reveal="line"].is-in.is-done { transform: none; }
+  }
+
+  /* уведомление о куки */
+  @keyframes ck-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) { [data-cookie].is-in { animation: ck-rise .3s ease-out both; } }
+  [data-cookie-ok] { font: inherit; }
+  [data-cookie-ok]:hover { background: #C7B79A; }
+  [data-cookie-ok]:focus-visible { outline-color: #C7B79A; }
+
+  @media print {
+    /* печать не зависит ни от скрипта, ни от наблюдателя */
+    [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    [data-cookie] { display: none !important; }
+    html, body { background: #fff !important; }
+    header { position: static !important; backdrop-filter: none !important; background: #fff !important; }
+    [data-skip], [data-scroll-hint], [data-scheme-hint] { display: none !important; }
+    [data-scheme] { overflow: visible !important; }
+    [data-scheme] > svg { min-width: 0 !important; }
+    /* фон при печати по умолчанию не печатается — светлый текст тёмных секций
+       иначе выходит белым по белому */
+    #report, #contact, footer { background: #fff !important; color: #14171A !important; }
+    #report *, #contact *, footer * { color: #14171A !important; }
+    [data-scroll] { overflow: visible !important; background: none !important; }
+    tr, li { break-inside: avoid; }
+    h1, h2, h3 { break-after: avoid; }
+  }
+
   @media (max-width: 760px) {
     [data-indent] { margin-left: 0 !important; }
     [data-mobile-full] { max-width: none !important; }
@@ -117,6 +236,24 @@
     header [data-serif] { font-size: 21px !important; }
     header [data-mark] { width: 21px; height: 21px; }
   }
+  /* --- схемы: широкая графика, которая на узком экране прокручивается ------ */
+  [data-scheme] { overflow-x: auto; overscroll-behavior-x: contain; min-width: 0; }
+  [data-scheme] > svg { display: block; height: auto; }
+  [data-scheme]:focus-visible { outline-offset: -2px; }
+  [data-scheme-hint] { display: block; margin-top: 12px; font-size: 13px; letter-spacing: 0.06em; color: #4C525A; }
+  @media (min-width: 1180px) { [data-scheme-hint] { display: none; } }
+  /* подсказка под таблицей черновика нужна только там, где таблица правда не помещается */
+  [data-hint-table] { display: none; }
+  @media (max-width: 520px) { [data-hint-table] { display: block; } }
+  @media (max-width: 999px) {
+    [data-doc-pair] { grid-template-columns: 1fr !important; }
+    [data-doc-in] { border-right: 0 !important; border-bottom: 1px solid #D6CFC0 !important; }
+  }
+  @media (max-width: 760px) {
+    [data-draft] th, [data-draft] td { font-size: 14px !important; }
+    [data-letter] { font-size: 14px !important; }
+  }
+
   @media (max-width: 760px) {
     [data-report] { min-width: 0 !important; }
     [data-report] th, [data-report] td { font-size: 14px !important; }
@@ -137,8 +274,36 @@
     *, *::after, *::before { transition: none !important; animation: none !important; }
   }
 </style>
+<script>
+/* Первая строка скрипта вешает на <html> класс .m-on — только под ним CSS
+   прячет блоки перед анимацией. Не выполнился скрипт (JS выключен, встроенный
+   браузер мессенджера, расширение, ошибка в модуле) — класса нет, и на странице
+   не скрыто ничего.
+   Предохранитель на 2 с закрывает единственный случай, который этот приём
+   создаёт: класс уже повешен, а motion.js не загрузился или не разобрался.
+   Как только motion.js берёт показ на себя, он вызывает __aseekKeep и
+   предохранитель снимается — иначе он через 2 с проявил бы всю страницу сам,
+   и появление по прокрутке перестало бы работать. */
+(function () {
+  var d = document.documentElement;
+  d.className += (d.className ? ' ' : '') + 'm-on';
+  var off = function () { d.className = d.className.replace(/(^|\s)m-on\b/, ''); };
+  var timer = setTimeout(off, 2000);
+  window.__aseekReveal = off;
+  window.__aseekKeep = function () { clearTimeout(timer); };
+  /* Второй, независимый путь к полной печати. Снять класс мало: motion.js
+     оставляет инлайновый transition с задержкой до ~1,1 с, а снимок для печати
+     делается сразу после обработчика. Поэтому переход здесь же гасится. */
+  window.addEventListener('beforeprint', function () {
+    off();
+    var n = document.querySelectorAll('[data-reveal]');
+    for (var i = 0; i < n.length; i++) n[i].style.transition = 'none';
+  });
+})();
+</script>
 </head>
 <body>
+<a href="#content" data-skip>Перейти к содержимому</a>
 <header style="position: sticky; top: 0; z-index: 20; background: rgba(251,250,247,.93); backdrop-filter: blur(10px); border-bottom: 1px solid #DCD7CD;">
   <div style="max-width: 1240px; margin: 0 auto; padding: 13px clamp(20px, 5vw, 64px); display: flex; align-items: baseline; gap: clamp(14px, 3vw, 44px); flex-wrap: wrap;">
     <a href="#top" data-logo style="display: flex; align-items: center; gap: 10px; color: #14171A;">
@@ -149,23 +314,24 @@
       <span data-serif style="font-size: 23px; letter-spacing: -0.015em;">aseek</span>
     </a>
     <nav data-nav style="display: flex; flex-wrap: wrap; gap: clamp(11px, 2vw, 28px); font-size: 14px; margin-left: auto;">
-      <a href="#change" data-min="0">Что меняется</a>
+      <a href="#map" data-min="0">Карта</a>
       <a href="#report">Отчёт</a>
+      <a href="#how" data-min="0">Как устроено</a>
       <a href="#services">Услуги</a>
-      <a href="#principles" data-min="0">Как работаем</a>
+      <a href="#principles" data-min="0">Принципы</a>
       <a href="#contact">Контакт</a>
     </nav>
     <a href="tel:+79111278110" data-inline-link style="font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap;">+7 911 127-81-10</a>
   </div>
 </header>
 
-<main>
+<main id="content" tabindex="-1">
 
   <section id="top" style="background: #FBFAF7;">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(44px, 9vw, 108px) clamp(20px, 5vw, 64px) clamp(44px, 8vw, 96px);">
       <div data-stagger>
         <div data-reveal style="display: flex; align-items: center; gap: 18px; margin-bottom: clamp(30px, 6vw, 60px);">
-          <p data-serif style="font-size: 15px; color: #C9C3B6; font-variant-numeric: tabular-nums;">01</p>
+          <p data-serif style="font-size: 15px; color: #6C685E; font-variant-numeric: tabular-nums;">01</p>
           <p style="font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #2E5C4E; white-space: nowrap;">ИИ в операционных процессах</p>
           <span data-reveal="line" style="display: block; flex: 1 1 auto; height: 1px; background: #C9C3B6;"></span>
         </div>
@@ -185,21 +351,140 @@
     </div>
   </section>
 
-  <section id="change" style="background: #FBFAF7; border-top: 1px solid #14171A;">
+
+  <section id="map" style="background: #FBFAF7; border-top: 1px solid #14171A;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px) clamp(44px, 7vw, 92px);">
+      <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(34px, 5vw, 64px);">
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">02</p>
+        <div data-reveal style="flex: 1 1 320px;">
+          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Карта диагностики</p>
+          <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em; max-width: 15em;">Двенадцать участков. В работу берём один.</h2>
+        </div>
+        <p data-reveal style="flex: 1 1 280px; max-width: 26em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A; text-wrap: pretty;">Диагностика идёт по всему контуру: где заявка рождается, через чьи руки проходит и где останавливается. Подсвечены участки, которыми занимаемся сейчас; из них в работу берётся тот, где цена операции выше остальных.</p>
+      </div>
+
+      <div data-stagger style="margin-bottom: clamp(48px, 8vw, 100px);">
+
+      
+
+      <div data-reveal data-scheme tabindex="0" role="group" aria-label="Карта операционного контура, двенадцать участков в двух линиях. Прокручивается вбок">
+        <svg viewBox="0 0 1042 320" role="img"
+             aria-label="Линия «Спрос и сделка»: маркетинг и лиды, квалификация и воронка, входящая заявка, подбор аналогов, спецификация и счёт, согласование и договор. Подписанный договор запускает вторую линию. Линия «Обеспечение и деньги»: закупка и снабжение, остатки и резервы, отгрузка и логистика, входящие документы, оплата и дебиторка, рекламации и сервис. Заливкой отмечены шесть участков, где работаем сейчас: входящая заявка, подбор аналогов, спецификация и счёт, согласование и договор, закупка и снабжение, входящие документы"
+             style="width: 100%; min-width: 1042px;"
+             font-family="'Golos Text', -apple-system, Arial, sans-serif">
+          <defs>
+            <marker id="aseek-map-arrow" viewBox="0 0 8 8" refX="7.4" refY="4" markerWidth="5.4" markerHeight="5.4" orient="auto">
+              <path d="M0.6,0.7 L7.4,4 L0.6,7.3 Z" fill="#4C525A" />
+            </marker>
+          </defs>
+
+          <!-- линия 1 -->
+          <text x="44" y="22" font-size="13" letter-spacing="1.5" fill="#4C525A">ЛИНИЯ 1 · СПРОС И СДЕЛКА</text>
+
+          <rect x="44"  y="40" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="116" y="72" font-size="15" fill="#232830" text-anchor="middle">Маркетинг</text>
+          <text x="116" y="92" font-size="15" fill="#232830" text-anchor="middle">и лиды</text>
+
+          <rect x="210" y="40" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="282" y="72" font-size="15" fill="#232830" text-anchor="middle">Квалификация,</text>
+          <text x="282" y="92" font-size="15" fill="#232830" text-anchor="middle">воронка</text>
+
+          <rect x="376" y="40" width="144" height="78" fill="#2E5C4E" />
+          <text x="448" y="72" font-size="15" fill="#FBFAF7" text-anchor="middle">Входящая</text>
+          <text x="448" y="92" font-size="15" fill="#FBFAF7" text-anchor="middle">заявка</text>
+
+          <rect x="542" y="40" width="144" height="78" fill="#2E5C4E" />
+          <text x="614" y="72" font-size="15" fill="#FBFAF7" text-anchor="middle">Подбор</text>
+          <text x="614" y="92" font-size="15" fill="#FBFAF7" text-anchor="middle">аналогов</text>
+
+          <rect x="708" y="40" width="144" height="78" fill="#2E5C4E" />
+          <text x="780" y="72" font-size="15" fill="#FBFAF7" text-anchor="middle">Спецификация</text>
+          <text x="780" y="92" font-size="15" fill="#FBFAF7" text-anchor="middle">и счёт</text>
+
+          <rect x="874" y="40" width="144" height="78" fill="#2E5C4E" />
+          <text x="946" y="72" font-size="15" fill="#FBFAF7" text-anchor="middle">Согласование</text>
+          <text x="946" y="92" font-size="15" fill="#FBFAF7" text-anchor="middle">и договор</text>
+
+          <g stroke="#4C525A" stroke-width="1.6" fill="none" marker-end="url(#aseek-map-arrow)">
+            <path d="M191,79 H207" />
+            <path d="M357,79 H373" />
+            <path d="M523,79 H539" />
+            <path d="M689,79 H705" />
+            <path d="M855,79 H871" />
+          </g>
+
+          <!-- переход между линиями -->
+          <text x="520" y="154" font-size="14" fill="#232830" text-anchor="middle">Подписанный договор запускает вторую линию</text>
+          <path d="M946,118 V166 H16 V269 H38" fill="none" stroke="#4C525A" stroke-width="1.6" marker-end="url(#aseek-map-arrow)" />
+
+          <!-- линия 2 -->
+          <text x="44" y="212" font-size="13" letter-spacing="1.5" fill="#4C525A">ЛИНИЯ 2 · ОБЕСПЕЧЕНИЕ И ДЕНЬГИ</text>
+
+          <rect x="44"  y="230" width="144" height="78" fill="#2E5C4E" />
+          <text x="116" y="262" font-size="15" fill="#FBFAF7" text-anchor="middle">Закупка,</text>
+          <text x="116" y="282" font-size="15" fill="#FBFAF7" text-anchor="middle">снабжение</text>
+
+          <rect x="210" y="230" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="282" y="262" font-size="15" fill="#232830" text-anchor="middle">Остатки,</text>
+          <text x="282" y="282" font-size="15" fill="#232830" text-anchor="middle">резервы</text>
+
+          <rect x="376" y="230" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="448" y="262" font-size="15" fill="#232830" text-anchor="middle">Отгрузка</text>
+          <text x="448" y="282" font-size="15" fill="#232830" text-anchor="middle">и логистика</text>
+
+          <rect x="542" y="230" width="144" height="78" fill="#2E5C4E" />
+          <text x="614" y="262" font-size="15" fill="#FBFAF7" text-anchor="middle">Входящие</text>
+          <text x="614" y="282" font-size="15" fill="#FBFAF7" text-anchor="middle">документы</text>
+
+          <rect x="708" y="230" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="780" y="262" font-size="15" fill="#232830" text-anchor="middle">Оплата,</text>
+          <text x="780" y="282" font-size="15" fill="#232830" text-anchor="middle">дебиторка</text>
+
+          <rect x="874" y="230" width="144" height="78" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="946" y="262" font-size="15" fill="#232830" text-anchor="middle">Рекламации,</text>
+          <text x="946" y="282" font-size="15" fill="#232830" text-anchor="middle">сервис</text>
+
+          <g stroke="#4C525A" stroke-width="1.6" fill="none" marker-end="url(#aseek-map-arrow)">
+            <path d="M191,269 H207" />
+            <path d="M357,269 H373" />
+            <path d="M523,269 H539" />
+            <path d="M689,269 H705" />
+            <path d="M855,269 H871" />
+          </g>
+        </svg>
+      </div>
+
+      <p data-scheme-hint style="margin-top: 12px; font-size: 13px; letter-spacing: 0.06em; color: #4C525A;">← схема шире экрана, прокручивается вбок →</p>
+
+      <ul data-reveal style="display: flex; flex-wrap: wrap; gap: 12px 36px; margin-top: clamp(18px, 2.6vw, 26px); padding-top: clamp(16px, 2.2vw, 22px); border-top: 1px solid #C9C3B6;">
+        <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.4; color: #232830;">
+          <span aria-hidden="true" style="flex: 0 0 auto; width: 16px; height: 16px; margin-top: 3px; background: #2E5C4E;"></span>
+          Участки, где работаем сейчас
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.4; color: #232830;">
+          <span aria-hidden="true" style="flex: 0 0 auto; width: 16px; height: 16px; margin-top: 3px; background: #FBFAF7; border: 1.5px solid #C9C3B6;"></span>
+          Поле диагностики — разбираем по вашим данным
+        </li>
+      </ul>
+    </div>
+    </div>
+  </section>
+
+  <section id="change" style="background: #F2EEE6; border-top: 1px solid #14171A;">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px) clamp(40px, 7vw, 88px);">
       <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(40px, 7vw, 84px);">
-        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #C9C3B6; font-variant-numeric: tabular-nums;">02</p>
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">03</p>
         <div data-reveal style="flex: 1 1 300px;">
           <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Что меняется</p>
           <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em; max-width: 18em;">Сегодня и через полгода</h2>
         </div>
-        <p data-reveal style="flex: 1 1 260px; max-width: 24em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A;">Четыре места, где деньги уходят при том же обороте. Какое из них ваше — разбирается на диагностике по вашим данным.</p>
+        <p data-reveal style="flex: 1 1 260px; max-width: 24em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A;">Четыре места, где деньги уходят при том же обороте. Какое из них ваше — разбирается на диагностике по вашим данным. Полгода здесь считаются от запуска участка.</p>
       </div>
 
       <div data-stagger data-flow style="margin-bottom: clamp(48px, 8vw, 100px);">
         <div data-reveal data-flow-col>
-          <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 14px;">Входит как есть</p>
-          <ul style="display: flex; flex-direction: column; gap: 7px; font-size: 16px; line-height: 1.4; color: #232830;">
+          <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 14px;">Входит как есть</p>
+          <ul role="list" style="display: flex; flex-direction: column; gap: 7px; font-size: 16px; line-height: 1.4; color: #232830;">
             <li>Письмо с вложением</li>
             <li>Фотография в мессенджере</li>
             <li>Таблица от клиента</li>
@@ -207,26 +492,26 @@
           </ul>
         </div>
         <div data-flow-arrow aria-hidden="true">
-          <svg viewBox="0 0 40 14" width="40" height="14" focusable="false"><path d="M0 7H34M28 1.5L34.5 7L28 12.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+          <svg viewBox="0 0 40 14" width="40" height="14" aria-hidden="true" focusable="false"><path d="M0 7H34M28 1.5L34.5 7L28 12.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
         </div>
         <div data-reveal data-flow-col data-core>
           <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Здесь работаем мы</p>
           <p style="font-size: 16px; line-height: 1.45; color: #14171A; text-wrap: pretty;">Разбор текста и вложений, распознавание номенклатуры, подбор аналога, сборка спецификации и счёта.</p>
         </div>
         <div data-flow-arrow aria-hidden="true">
-          <svg viewBox="0 0 40 14" width="40" height="14" focusable="false"><path d="M0 7H34M28 1.5L34.5 7L28 12.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+          <svg viewBox="0 0 40 14" width="40" height="14" aria-hidden="true" focusable="false"><path d="M0 7H34M28 1.5L34.5 7L28 12.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
         </div>
         <div data-reveal data-flow-col data-theirs>
-          <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 14px;">Ваша зона</p>
+          <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 14px;">Ваша зона</p>
           <p style="font-size: 16px; line-height: 1.45; color: #4C525A; text-wrap: pretty;">Готовый документ принимает учётная система. Доступ в неё нам не нужен, переделывать её не требуется.</p>
         </div>
       </div>
 
-      <ol data-stagger style="display: flex; flex-direction: column; gap: clamp(34px, 5vw, 62px); border-top: 1px solid #C9C3B6;">
+      <ol role="list" data-stagger style="display: flex; flex-direction: column; gap: clamp(34px, 5vw, 62px); border-top: 1px solid #C9C3B6;">
         <li data-reveal data-pair data-indent style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); padding-top: clamp(26px, 4vw, 44px);">
           <div>
-            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 12px;">Сегодня</p>
-            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #6B7078; text-wrap: pretty;">Одна заявка переписывается руками трижды: из письма в Excel, из Excel в 1С, из 1С обратно в письмо клиенту.</p>
+            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 12px;">Сегодня</p>
+            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #646971; text-wrap: pretty;">Одна заявка переписывается руками трижды: из письма в Excel, из Excel в 1С, из 1С обратно в письмо клиенту.</p>
           </div>
           <div data-then>
             <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 12px;">Через полгода</p>
@@ -235,8 +520,8 @@
         </li>
         <li data-reveal data-pair data-indent style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); border-top: 1px solid #E4DFD4; padding-top: clamp(26px, 4vw, 44px); margin-left: 5%;">
           <div>
-            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 12px;">Сегодня</p>
-            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #6B7078; text-wrap: pretty;">Заявка пришла фотографией в мессенджер: без номенклатуры, без артикулов, с рукописной правкой в углу.</p>
+            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 12px;">Сегодня</p>
+            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #646971; text-wrap: pretty;">Заявка пришла фотографией в мессенджер: без номенклатуры, без артикулов, с рукописной правкой в углу.</p>
           </div>
           <div data-then>
             <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 12px;">Через полгода</p>
@@ -245,8 +530,8 @@
         </li>
         <li data-reveal data-pair data-indent style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); border-top: 1px solid #E4DFD4; padding-top: clamp(26px, 4vw, 44px); margin-left: 1.5%;">
           <div>
-            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 12px;">Сегодня</p>
-            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #6B7078; text-wrap: pretty;">Менеджер сорок минут подбирает аналог и звонит на склад. Склад в это время занят тем же разговором.</p>
+            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 12px;">Сегодня</p>
+            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #646971; text-wrap: pretty;">Менеджер сорок минут подбирает аналог и звонит на склад. Склад в это время занят тем же разговором.</p>
           </div>
           <div data-then>
             <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 12px;">Через полгода</p>
@@ -255,8 +540,8 @@
         </li>
         <li data-reveal data-pair data-indent style="display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); border-top: 1px solid #E4DFD4; padding-top: clamp(26px, 4vw, 44px); margin-left: 9%;">
           <div>
-            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8578; margin-bottom: 12px;">Сегодня</p>
-            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #6B7078; text-wrap: pretty;">Часть заявок не заведена нигде: ни в CRM, ни в учёте. Живёт в переписке до самой отгрузки.</p>
+            <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6C685E; margin-bottom: 12px;">Сегодня</p>
+            <p data-mobile-full style="max-width: 22em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.45; color: #646971; text-wrap: pretty;">Часть заявок не заведена нигде: ни в CRM, ни в учёте. Живёт в переписке до самой отгрузки.</p>
           </div>
           <div data-then>
             <p style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 12px;">Через полгода</p>
@@ -267,7 +552,7 @@
 
       <div data-stagger style="margin-top: clamp(48px, 8vw, 104px);">
         <span data-reveal="line" style="display: block; height: 1px; background: #14171A; margin-bottom: clamp(22px, 3.5vw, 40px);"></span>
-        <p data-reveal data-serif style="max-width: 20em; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.22; letter-spacing: -0.018em; text-wrap: pretty;">Менеджеров стало на двоих меньше. Заявки обрабатываются так же.</p>
+        <p data-reveal data-serif style="max-width: 20em; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.22; letter-spacing: -0.018em; text-wrap: pretty;">Тот же поток заявок проходит через меньшее число рук.</p>
         <p data-reveal style="margin-top: clamp(18px, 2.6vw, 26px); max-width: 30em; font-size: clamp(16px, 1.8vw, 18px); line-height: 1.5; color: #4C525A; text-wrap: pretty;">Какой участок ваш и на сколько он сдвинется — это результат диагностики. Список того, что трогать не нужно, обычно длиннее списка того, что нужно.</p>
       </div>
     </div>
@@ -276,11 +561,11 @@
   <section id="report" style="background: #14171A; color: #EDEAE3;">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(52px, 9vw, 120px) clamp(20px, 5vw, 64px) clamp(56px, 9vw, 128px);">
       <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(34px, 5vw, 64px);">
-        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #4E5359; font-variant-numeric: tabular-nums;">03</p>
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #61676F; font-variant-numeric: tabular-nums;">04</p>
         <div data-reveal style="flex: 1 1 320px;">
           <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #C7B79A; margin-bottom: 14px;">Отчёт</p>
           <h2 style="font-size: clamp(30px, 4.8vw, 58px); line-height: 1.08; letter-spacing: -0.02em; max-width: 17em;">Одна страница, одни и те же показатели</h2>
-          <p style="margin-top: clamp(18px, 2.6vw, 26px); max-width: 26em; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.45; color: #EDEAE3; text-wrap: pretty;">Через полгода вы кладёте перед собой шесть таких страниц подряд и видите, что компания стала другой. Не по ощущению.</p>
+          <p style="margin-top: clamp(18px, 2.6vw, 26px); max-width: 26em; font-size: clamp(17px, 1.9vw, 21px); line-height: 1.45; color: #EDEAE3; text-wrap: pretty;">Отчёт выходит раз в месяц с первого месяца работы участка. Через шесть вы кладёте их перед собой подряд и видите, что компания стала другой. Не по ощущению.</p>
         </div>
         <p data-reveal style="flex: 1 1 280px; max-width: 26em; align-self: flex-end; font-size: clamp(16px, 1.8vw, 18px); line-height: 1.5; color: #C3C7CB; text-wrap: pretty;">Значение «до» зафиксировано в договоре и не меняется. Рядом — что сделано за месяц и что дальше. Каждый месяц те же строки, тот же порядок: ничего не добавляется и не убирается.</p>
       </div>
@@ -296,46 +581,47 @@
           <p style="font-size: 13px; color: #4C525A; font-variant-numeric: tabular-nums;">Месяц 3 из 6</p>
         </div>
 
-        <div style="overflow-x: auto; padding: 0 clamp(16px, 2.6vw, 32px);">
+        <div data-scroll tabindex="0" role="region" aria-label="Месячный отчёт, таблица показателей — прокручивается по горизонтали" style="overflow-x: auto; padding: 0 clamp(16px, 2.6vw, 32px);">
           <table data-report data-stagger style="min-width: 470px;">
+            <caption class="vh">Месячный отчёт по участку «Обработка заявки»: показатель, значение до начала работ, значение сейчас, цель</caption>
             <thead>
               <tr>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 8px 12px 0; border-bottom: 1px solid #14171A;">Показатель</th>
-                <th style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">До</th>
-                <th style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #14171A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">Сейчас</th>
-                <th style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">Цель</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 8px 12px 0; border-bottom: 1px solid #14171A;">Показатель</th>
+                <th scope="col" style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">До</th>
+                <th scope="col" style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #14171A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">Сейчас</th>
+                <th scope="col" style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 10px 0 12px 14px; border-bottom: 1px solid #14171A; width: 84px;">Цель</th>
               </tr>
             </thead>
             <tbody>
               <tr data-reveal>
                 <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0; border-bottom: 1px solid #E4DFD4;">Срок от заявки до спецификации, ч</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">7,4</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">7,4</td>
                 <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #14171A; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">4,1</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">2,5</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">2,5</td>
               </tr>
               <tr data-reveal>
                 <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0; border-bottom: 1px solid #E4DFD4;">Ручных переносов на одну заявку</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">3</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">3</td>
                 <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #14171A; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">1</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">0</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">0</td>
               </tr>
               <tr data-reveal>
                 <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0; border-bottom: 1px solid #E4DFD4;">Правок в спецификации после согласования, %</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">18</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">18</td>
                 <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #14171A; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">11</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">6</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">6</td>
               </tr>
               <tr data-reveal>
                 <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0; border-bottom: 1px solid #E4DFD4;">Заявок, обработанных без участия менеджера, %</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">0</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">0</td>
                 <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #14171A; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">34</td>
-                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #6B7078; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">60</td>
+                <td style="text-align: right; font-size: 15px; font-variant-numeric: tabular-nums; color: #646971; padding: 14px 0 14px 14px; border-bottom: 1px solid #E4DFD4;">60</td>
               </tr>
               <tr data-reveal>
-                <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0;">Цена обработки одной заявки, ₽<span style="display: block; font-size: 13px; color: #6B7078; margin-top: 3px;">считается на диагностике по вашим данным</span></td>
-                <td style="text-align: right; font-size: 15px; color: #6B7078; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
-                <td style="text-align: right; font-size: 15px; color: #6B7078; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
-                <td style="text-align: right; font-size: 15px; color: #6B7078; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
+                <td style="font-size: 15px; color: #232830; padding: 14px 8px 14px 0;">Цена обработки одной заявки, ₽<span style="display: block; font-size: 13px; color: #646971; margin-top: 3px;">считается на диагностике по вашим данным</span></td>
+                <td style="text-align: right; font-size: 15px; color: #646971; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
+                <td style="text-align: right; font-size: 15px; color: #646971; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
+                <td style="text-align: right; font-size: 15px; color: #646971; padding: 14px 0 14px 14px; vertical-align: top;">—</td>
               </tr>
             </tbody>
           </table>
@@ -344,7 +630,7 @@
         <div data-stagger style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(22px, 4vw, 56px); border-top: 1px solid #14171A; margin-top: clamp(22px, 3vw, 32px); padding: clamp(22px, 3vw, 32px) clamp(16px, 2.6vw, 32px) clamp(26px, 3.5vw, 38px);">
           <div data-reveal>
             <p style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #4C525A; margin-bottom: 14px;">Сделано за месяц</p>
-            <ul style="display: flex; flex-direction: column; gap: 12px;">
+            <ul role="list" style="display: flex; flex-direction: column; gap: 12px;">
               <li style="font-size: 15px; line-height: 1.45; color: #232830; padding-left: 16px; border-left: 1px solid #C9C3B6;">Разбор письма и вложения переведён в автоматический — менеджер только подтверждает</li>
               <li style="font-size: 15px; line-height: 1.45; color: #232830; padding-left: 16px; border-left: 1px solid #C9C3B6;">Заявки из мессенджера попадают в общую очередь, а не в личную переписку</li>
               <li style="font-size: 15px; line-height: 1.45; color: #232830; padding-left: 16px; border-left: 1px solid #C9C3B6;">Подбор аналогов идёт по справочнику замен, собранному из истории продаж</li>
@@ -352,7 +638,7 @@
           </div>
           <div data-reveal>
             <p style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #4C525A; margin-bottom: 14px;">Что дальше</p>
-            <ul style="display: flex; flex-direction: column; gap: 12px;">
+            <ul role="list" style="display: flex; flex-direction: column; gap: 12px;">
               <li style="font-size: 15px; line-height: 1.45; color: #232830; padding-left: 16px; border-left: 1px solid #C9C3B6;">Согласование спецификации переносится в один документ вместо цепочки писем</li>
               <li style="font-size: 15px; line-height: 1.45; color: #232830; padding-left: 16px; border-left: 1px solid #2E5C4E;">Открытый вопрос: два склада ведут остатки по-разному, до 15-го числа нужно решение с вашей стороны</li>
             </ul>
@@ -362,10 +648,197 @@
     </div>
   </section>
 
+
+  <section id="how" style="background: #FBFAF7;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px);">
+      <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(34px, 5vw, 64px);">
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">05</p>
+        <div data-reveal style="flex: 1 1 320px;">
+          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Механика участка</p>
+          <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em; max-width: 16em;">Уверенное — само, спорное — человеку</h2>
+        </div>
+        <p data-reveal style="flex: 1 1 280px; max-width: 26em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A; text-wrap: pretty;">Система разбирает письмо, сверяет позиции со справочником и оценивает, насколько уверена в каждой. Уверенные уходят дальше сами, спорные ложатся на стол менеджеру — и каждое его решение возвращается в справочник, поэтому уверенных со временем становится больше.</p>
+      </div>
+
+      <div data-stagger style="margin-bottom: clamp(52px, 8vw, 104px);">
+
+      <div data-reveal data-scheme tabindex="0" role="group" aria-label="Схема разбора заявки: от входящего письма до готового документа. Прокручивается вбок">
+        <svg viewBox="0 0 1042 540" role="img"
+             aria-label="Вход — письмо, фото, таблица, заявка в CRM. Дальше извлечение позиций из текста и файлов, сверка со справочником и историей продаж, оценка уверенности по каждой позиции. Где уверенно — черновик собран, менеджер подтверждает состав и цены. Где сомнительно — очередь на разбор человеком: исходник, вопрос, срок. Обе ветки сходятся в готовый документ, который уходит вашему специалисту штатным обменом, и в журнал решений: что решил ИИ, что поправил человек. Из журнала правки возвращаются в справочник"
+             style="width: 100%; min-width: 1042px;"
+             font-family="'Golos Text', -apple-system, Arial, sans-serif">
+          <defs>
+            <marker id="aseek-how-arrow" viewBox="0 0 8 8" refX="7.4" refY="4" markerWidth="5.4" markerHeight="5.4" orient="auto">
+              <path d="M0.6,0.7 L7.4,4 L0.6,7.3 Z" fill="#4C525A" />
+            </marker>
+            <marker id="aseek-how-arrow-loop" viewBox="0 0 8 8" refX="7.4" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0.6,0.7 L7.4,4 L0.6,7.3 Z" fill="#2E5C4E" />
+            </marker>
+          </defs>
+
+          <!-- обратный контур: из журнала решений в справочник -->
+          <path d="M32,483 H16 V26 H601 V68" fill="none" stroke="#2E5C4E" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aseek-how-arrow-loop)" />
+          <text x="585" y="52" font-size="14" fill="#2E5C4E" text-anchor="end">правки человека возвращаются в справочник</text>
+
+          <!-- верхний ряд -->
+          <rect x="32"  y="68" width="200" height="98" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="48"  y="94"  font-size="13" letter-spacing="1.4" fill="#2E5C4E">01</text>
+          <text x="48"  y="122" font-size="15" fill="#14171A">Вход: письмо, фото,</text>
+          <text x="48"  y="142" font-size="15" fill="#14171A">таблица, заявка в CRM</text>
+
+          <rect x="270" y="68" width="178" height="98" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="286" y="94"  font-size="13" letter-spacing="1.4" fill="#2E5C4E">02</text>
+          <text x="286" y="122" font-size="15" fill="#14171A">Извлечение</text>
+          <text x="286" y="142" font-size="15" fill="#14171A">позиций из файла</text>
+
+          <rect x="486" y="68" width="230" height="98" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="502" y="94"  font-size="13" letter-spacing="1.4" fill="#2E5C4E">03</text>
+          <text x="502" y="122" font-size="15" fill="#14171A">Сверка со справочником</text>
+          <text x="502" y="142" font-size="15" fill="#14171A">и историей продаж</text>
+
+          <rect x="754" y="68" width="188" height="98" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="770" y="94"  font-size="13" letter-spacing="1.4" fill="#2E5C4E">04</text>
+          <text x="770" y="122" font-size="15" fill="#14171A">Оценка уверенности</text>
+          <text x="770" y="142" font-size="15" fill="#14171A">по каждой позиции</text>
+
+          <g stroke="#4C525A" stroke-width="1.6" fill="none" marker-end="url(#aseek-how-arrow)">
+            <path d="M236,117 H266" />
+            <path d="M452,117 H482" />
+            <path d="M720,117 H750" />
+            <path d="M848,166 V246" />
+            <path d="M848,214 H601 V246" />
+          </g>
+
+          <!-- развилка -->
+          <rect x="486" y="250" width="230" height="112" fill="#FBFAF7" stroke="#2E5C4E" stroke-width="1.5" />
+          <text x="502" y="278" font-size="13" letter-spacing="1.4" fill="#2E5C4E">УВЕРЕННО</text>
+          <text x="502" y="306" font-size="15" fill="#14171A">Черновик собран,</text>
+          <text x="502" y="326" font-size="15" fill="#14171A">менеджер подтверждает</text>
+          <text x="502" y="346" font-size="15" fill="#14171A">состав и цены</text>
+
+          <rect x="754" y="250" width="188" height="112" fill="#FBFAF7" stroke="#C9C3B6" stroke-width="1.5" />
+          <text x="770" y="278" font-size="13" letter-spacing="1.4" fill="#4C525A">СОМНИТЕЛЬНО</text>
+          <text x="770" y="306" font-size="15" fill="#14171A">Очередь на разбор</text>
+          <text x="770" y="326" font-size="15" fill="#14171A">человеком: исходник,</text>
+          <text x="770" y="346" font-size="15" fill="#14171A">вопрос, срок</text>
+
+          <!-- сведение веток -->
+          <g stroke="#4C525A" stroke-width="1.6" fill="none">
+            <path d="M601,362 V402" />
+            <path d="M848,362 V402" />
+            <path d="M182,402 H848" />
+          </g>
+          <g stroke="#4C525A" stroke-width="1.6" fill="none" marker-end="url(#aseek-how-arrow)">
+            <path d="M735,402 V434" />
+            <path d="M182,402 V434" />
+          </g>
+
+          <rect x="470" y="438" width="530" height="90" fill="#FBFAF7" stroke="#14171A" stroke-width="2" />
+          <text x="488" y="466" font-size="13" letter-spacing="1.4" fill="#2E5C4E">ГОТОВЫЙ ДОКУМЕНТ</text>
+          <text x="488" y="492" font-size="15" fill="#14171A">Спецификация и счёт уходят вашему специалисту —</text>
+          <text x="488" y="512" font-size="15" fill="#14171A">штатный обмен, доступ в учётную систему не нужен</text>
+
+          <rect x="32" y="438" width="300" height="90" fill="#FBFAF7" stroke="#2E5C4E" stroke-width="1.5" />
+          <text x="48" y="466" font-size="13" letter-spacing="1.4" fill="#2E5C4E">ЖУРНАЛ РЕШЕНИЙ</text>
+          <text x="48" y="492" font-size="15" fill="#14171A">Что решил ИИ, что поправил</text>
+          <text x="48" y="512" font-size="15" fill="#14171A">человек и на каком основании</text>
+        </svg>
+      </div>
+
+      <p data-scheme-hint style="margin-top: 12px; font-size: 13px; letter-spacing: 0.06em; color: #4C525A;">← схема шире экрана, прокручивается вбок →</p>
+
+      <div data-reveal style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(20px, 3.4vw, 48px); margin-top: clamp(22px, 3.4vw, 34px); padding-top: clamp(18px, 2.6vw, 26px); border-top: 1px solid #D6CFC0;">
+        <p style="font-size: 15px; line-height: 1.5; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Порог уверенности задаёте вы.</strong> Он ставится на диагностике и меняется по ходу: чем полнее справочник, тем меньше позиций уходит в очередь.</p>
+        <p style="font-size: 15px; line-height: 1.5; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Спорная позиция ждёт человека.</strong> Она приходит в очередь вместе с исходной строкой клиента и вопросом, на который нужен ответ.</p>
+        <p style="font-size: 15px; line-height: 1.5; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Журнал решений — тот самый контур.</strong> Правка человека возвращается в справочник, и на следующей такой заявке позиция собирается сама.</p>
+      </div>
+    </div>
+
+      <div data-stagger style="margin-top: clamp(44px, 7vw, 88px);">
+        <div data-reveal style="border-top: 1px solid #14171A; padding-top: clamp(22px, 3.4vw, 36px); margin-bottom: clamp(24px, 3.6vw, 38px); display: flex; flex-wrap: wrap; gap: clamp(16px, 3vw, 48px);">
+          <div style="flex: 1 1 300px;">
+            <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #4C525A; margin-bottom: 14px;">Образец на условных данных</p>
+            <h3 style="font-size: clamp(21px, 2.6vw, 30px); line-height: 1.16; letter-spacing: -0.015em; max-width: 13em;">Письмо как пришло — и что из него собралось</h3>
+          </div>
+          <p style="flex: 1 1 320px; max-width: 30em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A; text-wrap: pretty;">Слева входящее в том виде, в каком оно приходит: артикулы вперемешку с текстом, часть позиций названа так, как их называют у клиента на складе. Справа — черновик спецификации: позиции сведены со справочником, две вынесены на подтверждение менеджеру.</p>
+        </div>
+
+        <div data-reveal style="background: #FBFAF7; box-shadow: 0 14px 40px rgba(20,23,26,.08);">
+
+      <div style="background: #ECE7DC; border-bottom: 1px solid #14171A; padding: clamp(14px, 2vw, 20px) clamp(16px, 2.6vw, 32px); display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: baseline;">
+        <p style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; font-weight: 500;">Письмо → черновик</p>
+        <p style="flex: 1 1 300px; font-size: clamp(14px, 1.5vw, 15px); line-height: 1.45; color: #232830;">Письмо и позиции вымышленные, приведены только затем, чтобы был виден вид документа. В работе строки и цены — ваши.</p>
+      </div>
+
+      <div data-doc-pair style="display: grid; grid-template-columns: 0.86fr 1.14fr;">
+
+        <div data-doc-in style="min-width: 0; background: #F2EEE6; border-right: 1px solid #D6CFC0; padding: clamp(18px, 2.6vw, 28px) clamp(16px, 2.6vw, 30px) clamp(22px, 3vw, 32px);">
+          <p style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #4C525A; margin-bottom: 14px;">Входящее письмо</p>
+          <p style="font-size: 14px; line-height: 1.45; color: #4C525A;">От: Курочкин А. В., «Северный трубный двор»</p>
+          <p style="font-size: 14px; line-height: 1.45; color: #4C525A; margin-bottom: 16px;">Тема: посчитайте на пятницу</p>
+          <div data-letter style="font-size: 15px; line-height: 1.6; color: #232830; border-left: 2px solid #C9C3B6; padding-left: 16px;">
+            <p>Добрый день! Посчитайте, пожалуйста:</p>
+            <p style="margin-top: 10px;">труба 57х3,5 ГОСТ 10704 — 120 м</p>
+            <p>отвод 90гр 57 ст20 — 14</p>
+            <p>кран шар. ду50 фланц. — 6 шт</p>
+            <p>фланец плоский ду50 ру16 — 12 шт</p>
+            <p style="margin-top: 10px;">Если 57х3,5 нет, можно 57х4, скажите цену.</p>
+            <p>Отгрузка до пятницы, самовывоз.</p>
+          </div>
+          <p style="margin-top: 16px; font-size: 14px; line-height: 1.45; color: #4C525A; text-wrap: pretty;">Как приходит на самом деле: без артикулов, с сокращениями, где-то без единицы измерения, с допуском аналога в конце.</p>
+        </div>
+
+        <div style="min-width: 0; padding: clamp(18px, 2.6vw, 28px) clamp(16px, 2.6vw, 32px) clamp(22px, 3vw, 32px);">
+          <p style="font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Собранный черновик спецификации</p>
+
+          <div data-scheme tabindex="0" role="group" aria-label="Черновик спецификации: четыре позиции, две из них помечены на подтверждение менеджеру">
+            <table data-draft style="min-width: 430px;">
+              <thead>
+                <tr>
+                  <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 0 8px 12px 0; border-bottom: 1px solid #14171A;">Позиция</th>
+                  <th scope="col" style="text-align: right; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 0 12px 12px 14px; border-bottom: 1px solid #14171A; width: 94px;">Кол-во</th>
+                  <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #14171A; padding: 0 0 12px 16px; border-bottom: 1px solid #14171A; width: 168px;">Статус</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-size: 15px; line-height: 1.4; color: #232830; padding: 13px 8px 13px 0; border-bottom: 1px solid #E4DFD4;">Труба стальная 57×3,5<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">ГОСТ 10704-91</span></td>
+                  <td style="text-align: right; font-size: 15px; color: #14171A; padding: 13px 12px 13px 14px; border-bottom: 1px solid #E4DFD4; vertical-align: top; font-variant-numeric: tabular-nums;">120 м</td>
+                  <td style="font-size: 14px; line-height: 1.35; color: #14171A; padding: 13px 0 13px 16px; border-bottom: 1px solid #E4DFD4; vertical-align: top; border-left: 2px solid #2E5C4E;">На подтверждение<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">клиент допустил аналог 57×4</span></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 15px; line-height: 1.4; color: #232830; padding: 13px 8px 13px 0; border-bottom: 1px solid #E4DFD4;">Отвод 90° 57×3,5, ст20<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">ГОСТ 17375-2001</span></td>
+                  <td style="text-align: right; font-size: 15px; color: #14171A; padding: 13px 12px 13px 14px; border-bottom: 1px solid #E4DFD4; vertical-align: top; font-variant-numeric: tabular-nums;">14</td>
+                  <td style="font-size: 14px; line-height: 1.35; color: #14171A; padding: 13px 0 13px 16px; border-bottom: 1px solid #E4DFD4; vertical-align: top; border-left: 2px solid #2E5C4E;">На подтверждение<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">не указана единица</span></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 15px; line-height: 1.4; color: #232830; padding: 13px 8px 13px 0; border-bottom: 1px solid #E4DFD4;">Кран шаровый фланцевый Ду50 Ру16<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">из письма: «кран шар. ду50 фланц.»</span></td>
+                  <td style="text-align: right; font-size: 15px; color: #14171A; padding: 13px 12px 13px 14px; border-bottom: 1px solid #E4DFD4; vertical-align: top; font-variant-numeric: tabular-nums;">6 шт</td>
+                  <td style="font-size: 14px; line-height: 1.35; color: #4C525A; padding: 13px 0 13px 16px; border-bottom: 1px solid #E4DFD4; vertical-align: top; border-left: 2px solid #E4DFD4;">Собрано<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">сокращение раскрыто</span></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 15px; line-height: 1.4; color: #232830; padding: 13px 8px 13px 0;">Фланец плоский Ду50 Ру16<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">ГОСТ 33259-2015</span></td>
+                  <td style="text-align: right; font-size: 15px; color: #14171A; padding: 13px 12px 13px 14px; vertical-align: top; font-variant-numeric: tabular-nums;">12 шт</td>
+                  <td style="font-size: 14px; line-height: 1.35; color: #4C525A; padding: 13px 0 13px 16px; vertical-align: top; border-left: 2px solid #E4DFD4;">Собрано<span style="display: block; font-size: 13px; color: #4C525A; margin-top: 2px;">ГОСТ по истории продаж</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p data-hint-table style="margin-top: 10px; font-size: 13px; color: #4C525A;">← таблица прокручивается вбок →</p>
+
+          <p style="margin-top: clamp(16px, 2.2vw, 22px); padding-top: clamp(14px, 2vw, 18px); border-top: 1px solid #14171A; font-size: 15px; line-height: 1.5; color: #232830; text-wrap: pretty;">Две строки из четырёх собраны без менеджера. Две ждут одного его нажатия: допуск аналога и единица измерения — решения клиента, а не машины. Оба решения уходят в журнал и в следующий раз собираются сами.</p>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
   <section id="services" style="background: #F2EEE6;">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px);">
       <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(36px, 6vw, 72px);">
-        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #CDC5B4; font-variant-numeric: tabular-nums;">04</p>
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">06</p>
         <div data-reveal style="flex: 1 1 300px;">
           <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Услуги</p>
           <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em; max-width: 16em;">Четыре ступени, одна за другой</h2>
@@ -373,20 +846,88 @@
         <p data-reveal style="flex: 1 1 260px; max-width: 23em; align-self: flex-end; font-size: 16px; line-height: 1.5; color: #4C525A;">Каждая ступень заканчивается решением, а не переходом на следующую. Остановиться после диагностики — нормальный исход.</p>
       </div>
 
+      <div data-stagger style="margin-bottom: clamp(48px, 8vw, 100px);">
+        <div data-reveal style="display: flex; flex-wrap: wrap; gap: 10px 40px; align-items: baseline; margin-bottom: clamp(18px, 2.6vw, 26px);">
+          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Диагностика по неделям</p>
+          <p style="flex: 1 1 320px; max-width: 40em; font-size: clamp(16px, 1.8vw, 18px); line-height: 1.5; color: #232830; text-wrap: pretty;">Первая ступень изнутри: с кем разговариваем, что выгружаем, что считаем и что показываем. Порядок один и тот же; при меньшем периметре вторая и третья недели идут вместе.</p>
+        </div>
+
+        <ol role="list" style="border-top: 1px solid #14171A;">
+        <li data-reveal data-step style="border-bottom: 1px solid #D6CFC0;">
+          <div style="display: flex; flex-wrap: wrap; gap: clamp(10px, 2.4vw, 36px); padding: clamp(20px, 3vw, 32px) clamp(12px, 2vw, 24px) clamp(20px, 3vw, 32px) 0;">
+            <div style="flex: 0 0 auto; width: clamp(74px, 9vw, 118px);">
+              <p data-serif style="font-size: clamp(15px, 1.6vw, 18px); color: #2E5C4E;">Неделя 1</p>
+              <span data-step-mark style="display: block; height: 2px; background: #C4BBA7; margin-top: 9px; transform: scaleX(.34);"></span>
+            </div>
+            <h4 style="flex: 0 1 150px; margin: 0; font-weight: 400; font-family: 'Source Serif 4', Georgia, serif; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.18; letter-spacing: -0.012em;">Как есть</h4>
+            <div style="flex: 4 1 300px; max-width: 34em;">
+              <p style="font-size: clamp(15px, 1.65vw, 17px); line-height: 1.5; color: #232830; text-wrap: pretty;">Разговоры с теми, кто ведёт заявку: коммерческий директор, снабжение, учёт, двое-трое менеджеров, которые делают работу руками. Отдельно садимся рядом и проходим одну живую заявку целиком — от письма до отгрузки, по тем экранам, на которых она идёт на самом деле.</p>
+              <p style="margin-top: 10px; font-size: 14px; line-height: 1.45; color: #4C525A;"><span style="color: #2E5C4E;">На выходе:</span> Карта контура в том виде, как он работает, с местами, где заявка останавливается.</p>
+            </div>
+          </div>
+        </li>
+        <li data-reveal data-step style="border-bottom: 1px solid #D6CFC0;">
+          <div style="display: flex; flex-wrap: wrap; gap: clamp(10px, 2.4vw, 36px); padding: clamp(20px, 3vw, 32px) clamp(12px, 2vw, 24px) clamp(20px, 3vw, 32px) 0;">
+            <div style="flex: 0 0 auto; width: clamp(74px, 9vw, 118px);">
+              <p data-serif style="font-size: clamp(15px, 1.6vw, 18px); color: #2E5C4E;">Неделя 2</p>
+              <span data-step-mark style="display: block; height: 2px; background: #C4BBA7; margin-top: 9px; transform: scaleX(.34);"></span>
+            </div>
+            <h4 style="flex: 0 1 150px; margin: 0; font-weight: 400; font-family: 'Source Serif 4', Georgia, serif; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.18; letter-spacing: -0.012em;">Данные</h4>
+            <div style="flex: 4 1 300px; max-width: 34em;">
+              <p style="font-size: clamp(15px, 1.65vw, 17px); line-height: 1.5; color: #232830; text-wrap: pretty;">Берём выгрузки: заказы и спецификации за год, справочник номенклатуры, историю замен, журнал CRM, архив почты отдела за квартал. Смотрим фактические данные, а не отчётные формы: сколько заявок приходит в месяц, сколько из них нестандартных, сколько правок вносится после согласования.</p>
+              <p style="margin-top: 10px; font-size: 14px; line-height: 1.45; color: #4C525A;"><span style="color: #2E5C4E;">На выходе:</span> Цена одной операции, посчитанная по вашим числам, и список того, что в данных нужно привести в порядок до старта.</p>
+            </div>
+          </div>
+        </li>
+        <li data-reveal data-step style="border-bottom: 1px solid #D6CFC0;">
+          <div style="display: flex; flex-wrap: wrap; gap: clamp(10px, 2.4vw, 36px); padding: clamp(20px, 3vw, 32px) clamp(12px, 2vw, 24px) clamp(20px, 3vw, 32px) 0;">
+            <div style="flex: 0 0 auto; width: clamp(74px, 9vw, 118px);">
+              <p data-serif style="font-size: clamp(15px, 1.6vw, 18px); color: #2E5C4E;">Неделя 3</p>
+              <span data-step-mark style="display: block; height: 2px; background: #C4BBA7; margin-top: 9px; transform: scaleX(.34);"></span>
+            </div>
+            <h4 style="flex: 0 1 150px; margin: 0; font-weight: 400; font-family: 'Source Serif 4', Georgia, serif; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.18; letter-spacing: -0.012em;">Проверка</h4>
+            <div style="flex: 4 1 300px; max-width: 34em;">
+              <p style="font-size: clamp(15px, 1.65vw, 17px); line-height: 1.5; color: #232830; text-wrap: pretty;">Прогоняем полсотни ваших настоящих писем через разбор и смотрим, какая доля собирается уверенно, а какая уходит человеку. Каждый кандидат на автоматизацию получает три оценки: годовой эффект, сложность, что может пойти не так.</p>
+              <p style="margin-top: 10px; font-size: 14px; line-height: 1.45; color: #4C525A;"><span style="color: #2E5C4E;">На выходе:</span> Доля, посчитанная на ваших письмах, а не на нашем примере.</p>
+            </div>
+          </div>
+        </li>
+        <li data-reveal data-step style="border-bottom: 1px solid #14171A;">
+          <div style="display: flex; flex-wrap: wrap; gap: clamp(10px, 2.4vw, 36px); padding: clamp(20px, 3vw, 32px) clamp(12px, 2vw, 24px) clamp(20px, 3vw, 32px) 0;">
+            <div style="flex: 0 0 auto; width: clamp(74px, 9vw, 118px);">
+              <p data-serif style="font-size: clamp(15px, 1.6vw, 18px); color: #2E5C4E;">Неделя 4</p>
+              <span data-step-mark style="display: block; height: 2px; background: #C4BBA7; margin-top: 9px; transform: scaleX(.34);"></span>
+            </div>
+            <h4 style="flex: 0 1 150px; margin: 0; font-weight: 400; font-family: 'Source Serif 4', Georgia, serif; font-size: clamp(19px, 2.2vw, 25px); line-height: 1.18; letter-spacing: -0.012em;">Решение</h4>
+            <div style="flex: 4 1 300px; max-width: 34em;">
+              <p style="font-size: clamp(15px, 1.65vw, 17px); line-height: 1.5; color: #232830; text-wrap: pretty;">Собираем приоритет: что первым, что вторым, чего делать не нужно. Фиксируем показатель «до» — значение, способ измерения и дату. Разбираем результат на встрече с вашей управленческой командой, полтора часа.</p>
+              <p style="margin-top: 10px; font-size: 14px; line-height: 1.45; color: #4C525A;"><span style="color: #2E5C4E;">На выходе:</span> Решение о том, куда идёт бюджет на год, с числами, которые можно защищать перед собственником.</p>
+            </div>
+          </div>
+        </li>
+        </ol>
+
+        <div data-reveal style="margin-top: clamp(20px, 3vw, 30px); display: flex; flex-wrap: wrap; gap: clamp(18px, 3vw, 56px);">
+          <p style="flex: 1 1 320px; max-width: 32em; font-size: 15px; line-height: 1.5; color: #232830;"><span style="color: #2E5C4E;">На руки:</span> карта контура · расчёт цены операции с исходными выгрузками, чтобы ваш финансист мог пересчитать · лист приоритетов · протокол замера «до», тот самый, который потом стоит в первой колонке каждого месячного отчёта · требования к данным.</p>
+          <p style="flex: 1 1 280px; max-width: 28em; font-size: 15px; line-height: 1.5; color: #4C525A;"><span style="color: #2E5C4E;">От вас нужно:</span> шесть-восемь разговоров по часу, полтора часа управленческой команды в конце, выгрузки из учётной системы и почты и один человек на связи, к которому можно прийти с вопросом «почему здесь так».</p>
+        </div>
+      </div>
+
       <div data-reveal style="background: #FBFAF7; margin-bottom: clamp(44px, 7vw, 88px); box-shadow: 0 14px 40px rgba(20,23,26,.08);">
         <div style="background: #ECE7DC; border-bottom: 1px solid #14171A; padding: clamp(14px, 2vw, 20px) clamp(16px, 2.6vw, 32px); display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: baseline;">
           <p style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #2E5C4E; font-weight: 500;">Лист приоритетов</p>
           <p style="flex: 1 1 280px; font-size: clamp(14px, 1.5vw, 15px); line-height: 1.45; color: #232830;">Что выходит из диагностики. Оценки условные и приведены только затем, чтобы был виден вид документа.</p>
         </div>
-        <div style="overflow-x: auto; padding: clamp(14px, 2vw, 22px) clamp(16px, 2.6vw, 32px) 0;">
+        <div data-scroll tabindex="0" role="region" aria-label="Лист приоритетов, таблица — прокручивается по горизонтали" style="overflow-x: auto; padding: clamp(14px, 2vw, 22px) clamp(16px, 2.6vw, 32px) 0;">
           <table data-prio data-stagger style="min-width: 560px;">
+            <caption class="vh">Лист приоритетов: участок, эффект, сложность, готовность данных, решение</caption>
             <thead>
               <tr>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 0; border-bottom: 1px solid #14171A;">Участок</th>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Эффект</th>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Сложность</th>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Данные</th>
-                <th style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #14171A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Решение</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 0; border-bottom: 1px solid #14171A;">Участок</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Эффект</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Сложность</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4C525A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Данные</th>
+                <th scope="col" style="text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #14171A; padding: 6px 8px 12px 14px; border-bottom: 1px solid #14171A;">Решение</th>
               </tr>
             </thead>
             <tbody>
@@ -421,10 +962,11 @@
             </tbody>
           </table>
         </div>
+        <p data-scroll-hint aria-hidden="true" style="margin: 10px clamp(16px, 2.6vw, 32px) 0;">Таблица шире экрана — прокручивается вбок</p>
         <p data-reveal style="border-top: 1px solid #14171A; margin-top: clamp(18px, 2.6vw, 26px); padding: clamp(16px, 2.4vw, 22px) clamp(16px, 2.6vw, 32px); font-size: 15px; line-height: 1.5; color: #4C525A;">Строка «не трогать» — обычный исход, а не исключение. Диагностика заканчивается решением о бюджете, и это решение может оказаться отрицательным.</p>
       </div>
 
-      <ol data-stagger style="border-top: 1px solid #14171A;">
+      <ol role="list" data-stagger style="border-top: 1px solid #14171A;">
         <li data-reveal data-step style="border-bottom: 1px solid #D6CFC0;">
           <div style="display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 44px); padding: clamp(22px, 3.4vw, 38px) clamp(12px, 2vw, 24px) clamp(22px, 3.4vw, 38px) 0;">
             <div style="flex: 0 0 auto; width: clamp(40px, 6vw, 92px);">
@@ -460,6 +1002,7 @@
             <h3 style="flex: 2 1 190px; max-width: 9em; font-size: clamp(23px, 2.8vw, 33px); line-height: 1.16; letter-spacing: -0.015em;">Внедрение</h3>
             <div style="flex: 4 1 300px; max-width: 32em;">
               <p style="font-size: clamp(16px, 1.75vw, 18px); line-height: 1.5; color: #232830; text-wrap: pretty;">Разбор писем и вложений, распознавание заявок-фотографий, подбор аналогов по истории продаж, сборка спецификации и счёта, передача готового документа в учётную систему — разворачивается на весь участок вместе с регламентом и обучением тех, кто работает с этим каждый день.</p>
+              <p style="margin-top: 14px; font-size: 15px; color: #4C525A;">Цена внедрения выходит из диагностики: сама диагностика обычно составляет от десятой до пятой части его бюджета</p>
               <p style="margin-top: 14px; font-size: 15px; color: #4C525A;">Собираем на том, что у вас уже стоит, если процесс стандартный. Пишем отдельно, если процесс и есть ваше отличие от конкурентов. Доступ в боевую учётную систему для этого не нужен: готовый документ принимает ваш специалист штатным обменом</p>
             </div>
           </div>
@@ -508,7 +1051,7 @@
   <section id="principles" style="background: #FBFAF7;">
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px);">
       <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(36px, 6vw, 76px);">
-        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #C9C3B6; font-variant-numeric: tabular-nums;">05</p>
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">07</p>
         <div data-reveal style="flex: 1 1 320px;">
           <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Принципы</p>
           <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em;">Как мы работаем</h2>
@@ -516,7 +1059,7 @@
         </div>
       </div>
 
-      <ol data-stagger style="display: flex; flex-direction: column;">
+      <ol role="list" data-stagger style="display: flex; flex-direction: column;">
         <li data-reveal style="border-top: 1px solid #C9C3B6; padding: clamp(20px, 3vw, 30px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
           <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">01</p>
           <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(17px, 1.85vw, 20px); line-height: 1.47; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Показатель выбран и измерен до начала работ.</strong> Если непонятно, что и как мерить, сначала выясняем это.</p>
@@ -539,7 +1082,43 @@
         </li>
         <li data-reveal style="border-top: 1px solid #C9C3B6; border-bottom: 1px solid #C9C3B6; padding: clamp(20px, 3vw, 30px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
           <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">06</p>
-          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(17px, 1.85vw, 20px); line-height: 1.47; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Ваши процессы останутся вашими.</strong> Мы не выкладываем работу клиентов на сайт и не показываем её в презентациях.</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(17px, 1.85vw, 20px); line-height: 1.47; color: #232830; text-wrap: pretty;"><strong style="font-weight: 600; color: #14171A;">Ваши процессы останутся вашими.</strong> Мы не выкладываем работу клиентов на сайт.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+
+  <section id="data" style="background: #F2EEE6;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px);">
+      <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 72px); margin-bottom: clamp(30px, 5vw, 60px);">
+        <p data-reveal data-serif style="flex: 0 0 auto; font-size: clamp(40px, 5vw, 64px); line-height: .9; letter-spacing: -0.03em; color: #90846B; font-variant-numeric: tabular-nums;">08</p>
+        <div data-reveal style="flex: 1 1 320px;">
+          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #2E5C4E; margin-bottom: 14px;">Данные и доступ</p>
+          <h2 style="font-size: clamp(29px, 4.4vw, 54px); line-height: 1.1; letter-spacing: -0.02em; max-width: 16em;">Что происходит с тем, что вы нам показали</h2>
+        </div>
+      </div>
+
+      <ol role="list" data-stagger style="display: flex; flex-direction: column;">
+        <li data-reveal style="border-top: 1px solid #C9C3B6; padding: clamp(18px, 2.6vw, 26px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
+          <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">01</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(16px, 1.75vw, 19px); line-height: 1.5; color: #232830; text-wrap: pretty;">Соглашение о неразглашении подписывается до того, как вы покажете первый документ.</p>
+        </li>
+        <li data-reveal style="border-top: 1px solid #C9C3B6; padding: clamp(18px, 2.6vw, 26px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
+          <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">02</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(16px, 1.75vw, 19px); line-height: 1.5; color: #232830; text-wrap: pretty;">Для диагностики хватает выгрузок и образцов писем. Доступ в боевые системы не запрашиваем: готовый документ принимает ваш специалист штатным обменом.</p>
+        </li>
+        <li data-reveal style="border-top: 1px solid #C9C3B6; padding: clamp(18px, 2.6vw, 26px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
+          <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">03</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(16px, 1.75vw, 19px); line-height: 1.5; color: #232830; text-wrap: pretty;">Персональные данные обрабатываются по вашему поручению и только для работ по договору: состав, цель и срок записаны там же. Оператором остаётесь вы, как это и устроено в 152-ФЗ.</p>
+        </li>
+        <li data-reveal style="border-top: 1px solid #C9C3B6; padding: clamp(18px, 2.6vw, 26px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
+          <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">04</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(16px, 1.75vw, 19px); line-height: 1.5; color: #232830; text-wrap: pretty;">Доступ к вашим данным есть у тех, кто работает на вашем проекте, — у тех, с кем вы разговариваете. Список именной, и вы его видите.</p>
+        </li>
+        <li data-reveal style="border-top: 1px solid #C9C3B6; border-bottom: 1px solid #C9C3B6; padding: clamp(18px, 2.6vw, 26px) 0; display: flex; flex-wrap: wrap; gap: clamp(12px, 3vw, 48px);">
+          <p data-serif style="flex: 0 0 auto; width: clamp(38px, 5vw, 72px); font-size: clamp(17px, 2vw, 22px); color: #2E5C4E; font-variant-numeric: tabular-nums;">05</p>
+          <p style="flex: 1 1 300px; max-width: 36em; font-size: clamp(16px, 1.75vw, 19px); line-height: 1.5; color: #232830; text-wrap: pretty;">Когда работы закончены, рабочие копии удаляются. Что остаётся у вас и что удаляется у нас — записано до старта, а не выясняется потом.</p>
         </li>
       </ol>
     </div>
@@ -549,7 +1128,7 @@
     <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 9vw, 128px) clamp(20px, 5vw, 64px) clamp(52px, 8vw, 112px);">
       <div data-stagger style="display: flex; flex-wrap: wrap; gap: clamp(32px, 6vw, 96px);">
         <div data-reveal style="flex: 5 1 340px;">
-          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #C7B79A; margin-bottom: 18px;">06 / Контакт</p>
+          <p style="font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #C7B79A; margin-bottom: 18px;">09 / Контакт</p>
           <h2 style="font-size: clamp(30px, 4.8vw, 58px); line-height: 1.08; letter-spacing: -0.02em; max-width: 18em;">Первый разговор — про ваши процессы, не про нас.</h2>
           <p style="margin-top: clamp(18px, 3vw, 28px); max-width: 28em; font-size: clamp(17px, 1.9vw, 20px); line-height: 1.47; color: #C3C7CB; text-wrap: pretty;">Напишите или позвоните и опишите в двух строках, что происходит в процессе. Ответим по существу: что здесь имеет смысл делать, а что нет.</p>
           <p style="margin-top: clamp(14px, 2.2vw, 20px); max-width: 28em; font-size: 16px; line-height: 1.5; color: #8F959C; text-wrap: pretty;">Если до диагностики рано — начните с рабочей сессии на полдня. Она ни к чему не обязывает и заканчивается вашим собственным списком, а не нашим предложением.</p>
@@ -558,6 +1137,8 @@
           <a href="mailto:hello@aseek.ru" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">hello@aseek.ru</a>
           <a href="tel:+79111278110" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 911 127-81-10</a>
           <a href="tel:+79626856358" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em; font-variant-numeric: tabular-nums;">+7 962 685-63-58</a>
+          <a href="https://t.me/Esla812" rel="noopener" data-serif data-big-link data-big-link-dark style="font-size: clamp(25px, 3.6vw, 42px); letter-spacing: -0.012em;">@Esla812</a>
+          <p style="max-width: 24em; font-size: 15px; line-height: 1.5; color: #8F959C; text-wrap: pretty;">Работаем удалённо, по всей России. Разговоры и рабочие сессии — по видеосвязи, в вашем часовом поясе.</p>
         </div>
       </div>
     </div>
@@ -566,18 +1147,61 @@
 </main>
 
 <footer style="background: #14171A; color: #8F959C; border-top: 1px solid #2A2F35;">
-  <div style="max-width: 1240px; margin: 0 auto; padding: 26px clamp(20px, 5vw, 64px) 48px; display: flex; flex-wrap: wrap; gap: 10px 32px; align-items: baseline; font-size: 14px;">
-    <p data-serif style="font-size: 17px; color: #EDEAE3;">aseek</p>
-    <p>практика ООО «Мы7»</p>
-    <a href="tel:+79111278110" data-inline-link data-inline-link-dark style="font-variant-numeric: tabular-nums;">+7 911 127-81-10</a>
-    <a href="tel:+79626856358" data-inline-link data-inline-link-dark style="font-variant-numeric: tabular-nums;">+7 962 685-63-58</a>
-    <a href="mailto:hello@aseek.ru" data-inline-link data-inline-link-dark>hello@aseek.ru</a>
-    <p style="margin-left: auto; font-variant-numeric: tabular-nums;">2026</p>
+  <div style="max-width: 1240px; margin: 0 auto; padding: 26px clamp(20px, 5vw, 64px) 48px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 10px 32px; align-items: baseline; font-size: 14px;">
+      <p data-serif style="font-size: 17px; color: #EDEAE3;">aseek</p>
+      <p>практика ООО «Мы7»</p>
+      <a href="tel:+79111278110" data-inline-link data-inline-link-dark style="font-variant-numeric: tabular-nums;">+7 911 127-81-10</a>
+      <a href="tel:+79626856358" data-inline-link data-inline-link-dark style="font-variant-numeric: tabular-nums;">+7 962 685-63-58</a>
+      <a href="mailto:hello@aseek.ru" data-inline-link data-inline-link-dark>hello@aseek.ru</a>
+      <a href="https://t.me/Esla812" rel="noopener" data-inline-link data-inline-link-dark>@Esla812</a>
+      <p style="margin-left: auto; font-variant-numeric: tabular-nums;">2026</p>
+    </div>
+    <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #2A2F35; font-size: 13px; line-height: 1.6; color: #8F959C; font-variant-numeric: tabular-nums;">ООО «Мы7» · ИНН 7804720410 · ОГРН 1267800024293</p>
   </div>
 </footer>
+<!-- Уведомление о куки. По умолчанию скрыто разметкой: без JavaScript его нечем
+     было бы закрыть, и оно висело бы навсегда. Показывает и прячет скрипт ниже. -->
+<div data-cookie role="region" aria-label="Уведомление об обработке данных"
+     style="display: none; position: fixed; left: 16px; bottom: 16px; z-index: 50;
+            width: min(376px, calc(100vw - 48px)); background: #14171A;
+            border: 1px solid #2A2F35; box-shadow: 0 10px 34px rgba(20, 23, 26, 0.3);
+            padding: 18px 20px 20px;">
+  <p style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #C7B79A; margin-bottom: 10px;">Куки и данные о посещении</p>
+  <p style="font-size: 15px; line-height: 1.5; color: #C3C7CB; text-wrap: pretty;">Сайт ставит куки и передаёт в Яндекс.Метрику данные о посещении: какие разделы открывали, откуда пришли, как двигались по странице. Персональных данных мы здесь не запрашиваем. Оставаясь на странице, вы соглашаетесь с этим.</p>
+  <button type="button" data-cookie-ok
+          style="margin-top: 16px; padding: 10px 24px; background: #FBFAF7; color: #14171A;
+                 border: 0; font-size: 15px; line-height: 1.2; cursor: pointer;">Хорошо</button>
+</div>
+<script>
+(function () {
+  var box = document.querySelector('[data-cookie]');
+  if (!box) return;
+  var key = 'aseek-cookie-notice', seen = null;
+  try { seen = localStorage.getItem(key); } catch (e) {}
+  if (seen) return;
+  box.style.display = 'block';
+  box.className = 'is-in';
+  box.querySelector('[data-cookie-ok]').addEventListener('click', function () {
+    box.style.display = 'none';
+    try { localStorage.setItem(key, '1'); } catch (e) {}
+  });
+})();
+</script>
 <script type="module">
   import { init } from './motion.js';
   init(document);
 </script>
+<!-- Яндекс.Метрика. Единственный внешний запрос на странице; загружается отложенно
+     и на отрисовку не влияет. -->
+<script>
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return}}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=111594783','ym');
+ym(111594783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:'dataLayer',
+referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111594783" style="position:absolute;left:-9999px" alt="" /></div></noscript>
 </body>
 </html>
