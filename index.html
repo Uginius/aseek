@@ -1209,8 +1209,11 @@
   var live = document.querySelector('[data-copy-live]');
   var say = function (t) { if (live) live.textContent = t; };
 
-  // navigator.clipboard есть только на защищённом соединении; на http и в
-  // старых браузерах остаётся приём с временным полем и execCommand
+  // navigator.clipboard появился поздно: Chrome 66, Firefox 63, Safari 13.1.
+  // На aseek.ru он доступен всегда — соединение защищённое, http отдаёт 301.
+  // Запасной путь нужен не для домена, а для старых браузеров, встроенных
+  // браузеров корпоративных программ и открытия страницы с диска (file://):
+  // там кнопка иначе молча не делала бы ничего.
   var copy = function (text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text);
